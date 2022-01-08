@@ -72,7 +72,7 @@ print(classWeight)
 print('classWeight datatype')
 print(type(classWeight))
 
-classWeight = dict(enumerate(classWeight, 0))
+classWeight = dict(enumerate(reversed(classWeight), 0))
 print(classWeight)
 
 H = model.fit(trainX, trainY, validation_data=(testX, testY),
