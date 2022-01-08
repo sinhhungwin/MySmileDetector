@@ -68,8 +68,15 @@ model.compile(loss=['binary_crossentropy'], optimizer='adam', metrics=['accuracy
 # train the network
 print('[INFO] training network...')
 # TODO đổi tên H
+print(classWeight)
+print('classWeight datatype')
+print(type(classWeight))
+
+classWeight = dict(enumerate(classWeight, 0))
+print(classWeight)
+
 H = model.fit(trainX, trainY, validation_data=(testX, testY),
-              # class_weight=classWeight,
+              class_weight=classWeight,
               batch_size=64, epochs=15, verbose=1)
 
 # evaluate the network
