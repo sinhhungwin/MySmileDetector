@@ -5,6 +5,8 @@ import numpy as np
 import imutils
 import argparse
 import cv2
+import datetime
+import time
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
@@ -65,6 +67,17 @@ while True:
         if label == 'Smiling':
             cv2.putText(frameClone, label, (fX, fY - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 255, 0), 2)
             cv2.rectangle(frameClone, (fX, fY), (fX + fW, fY + fH), (0, 255, 0), 2)
+
+            ct = datetime.datetime.now()
+            ts = ct.timestamp()
+
+            ts = "images/{}.png".format(ts)
+
+            print(ts)
+
+            cv2.imwrite(ts, frame)
+
+            time.sleep(1/3)
         else:
             cv2.putText(frameClone, label, (fX, fY - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
             cv2.rectangle(frameClone, (fX, fY), (fX + fW, fY + fH), (0, 0, 255), 2)
