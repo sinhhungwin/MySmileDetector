@@ -4,7 +4,14 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 from keras.preprocessing.image import img_to_array
 from keras.utils import np_utils
-from pyimagesearch.nn.conv import LeNet
+from keras.models import Sequential
+from keras.layers.convolutional import Conv2D
+from keras.layers.convolutional import MaxPooling2D
+from keras.layers.core import Activation
+from keras.layers.core import Flatten
+from keras.layers.core import Dense
+from keras import backend as K
+# from pyimagesearch.nn.conv import LeNet
 from imutils import paths
 import imutils
 import matplotlib.pyplot as plt
@@ -62,8 +69,39 @@ print('[INFO] compiling model...')
 
 # LeNet architecture that will accept 28×28 single channel images.
 # Given that there are only two classes (smiling versus not smiling), we set classes=2
-model = LeNet.build(width=28, height=28, depth=1, classes=2)
-model.compile(loss=['binary_crossentropy'], optimizer='adam', metrics=['accuracy'])
+model = Sequential()
+
+height, width, depth, classes = 28, 28, 1, 2
+
+inputShape = (height, width, depth)
+
+# if we are using 'channels first', update the input shape
+if K.image_data_format() == 'channels_first':
+    inputShape = (depth, height, width)
+
+# first set of CONV => ReLU => POOL layers
+model.add(Conv2D(20, (5, 5), padding='same', input_shape=inputShape))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+
+# second layer of CONV => ReLU => POOL layers
+model.add(Conv2D(50, (5, 5), padding='same'))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+
+# first (and only) set of FC => ReLU layers
+model.add(Flatten())
+model.add(Dense(128))
+model.add(Activation('relu'))
+
+# softmax classifier
+model.add(Dense(classes))
+model.add(Activation('softmax'))
+
+# model = LeNet.build(width=28, height=28, depth=1, classes=2)
+model.compile(loss=['binary_crossentropy'], optimizer='rmsprop', metrics=['accuracy'])
+
+print(model.summary())
 
 # train the network
 print('[INFO] training network...')
