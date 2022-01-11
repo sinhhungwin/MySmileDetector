@@ -11,7 +11,6 @@ from keras.layers.core import Activation
 from keras.layers.core import Flatten
 from keras.layers.core import Dense
 from keras import backend as K
-# from pyimagesearch.nn.conv import LeNet
 from imutils import paths
 import imutils
 import matplotlib.pyplot as plt
@@ -53,7 +52,6 @@ labels = np.array(labels)
 # convert the labels from integers to vectors
 le = LabelEncoder().fit(labels)
 
-# TODO: Cá nhân mình thấy dòng này thừa thãi
 labels = np_utils.to_categorical(le.transform(labels), 2)
 
 # account for skew in the labeled data
@@ -105,7 +103,6 @@ print(model.summary())
 
 # train the network
 print('[INFO] training network...')
-# TODO đổi tên H
 print(classWeight)
 print('classWeight datatype')
 print(type(classWeight))
