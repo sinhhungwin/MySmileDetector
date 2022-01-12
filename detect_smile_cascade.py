@@ -19,6 +19,14 @@ def detect(g, f):
 
 
 video_capture = cv2.VideoCapture(0)
+
+
+# Grab width and height from video feed
+width = int(video_capture.get(cv2.CAP_PROP_FRAME_WIDTH))
+height = int(video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+writer = cv2.VideoWriter('haar.mp4', cv2.VideoWriter_fourcc(*'VIDX'), 25, (width, height))
+
 while video_capture.isOpened():
     # Captures video_capture frame by frame
     _, frame = video_capture.read()
@@ -29,6 +37,8 @@ while video_capture.isOpened():
     # calls the detect() function
     canvas = detect(gray, frame)
 
+    writer.write(canvas)
+
     # Displays the result on camera feed
     cv2.imshow('Video', canvas)
 
@@ -38,4 +48,5 @@ while video_capture.isOpened():
 
 # Release the capture once all the processing is done.
 video_capture.release()
+writer.release()
 cv2.destroyAllWindows()

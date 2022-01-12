@@ -28,6 +28,14 @@ if not args.get('video', False):
 else:
     camera = cv2.VideoCapture(args['video'])
 
+
+# Grab width and height from video feed
+width = int(camera.get(cv2.CAP_PROP_FRAME_WIDTH))
+height = int(camera.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+writer = cv2.VideoWriter('cnn.mp4', cv2.VideoWriter_fourcc(*'VIDX'), 25, (width, height))
+
+
 # keep looping
 while True:
     # grab the current frame
@@ -68,19 +76,21 @@ while True:
             cv2.putText(frameClone, label, (fX, fY - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 255, 0), 2)
             cv2.rectangle(frameClone, (fX, fY), (fX + fW, fY + fH), (0, 255, 0), 2)
 
-            ct = datetime.datetime.now()
-            ts = ct.timestamp()
-
-            ts = "images/{}.png".format(ts)
-
-            print(ts)
-
-            cv2.imwrite(ts, frame)
-
-            time.sleep(1/3)
+            # ct = datetime.datetime.now()
+            # ts = ct.timestamp()
+            #
+            # ts = "images/{}.png".format(ts)
+            #
+            # print(ts)
+            #
+            # cv2.imwrite(ts, frame)
+            #
+            # time.sleep(1/3)
         else:
             cv2.putText(frameClone, label, (fX, fY - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
             cv2.rectangle(frameClone, (fX, fY), (fX + fW, fY + fH), (0, 0, 255), 2)
+
+    writer.write(frameClone)
 
     # show our detected face along with smiling/not smiling labels
     cv2.imshow('Face', frameClone)
